@@ -20,12 +20,16 @@ namespace TheatricalPlayersRefactoringKata
                 volumeCredits = CountVolumeCredits(volumeCredits, perf, play);
 
                 // print line for this order
-                result += String.Format(cultureInfo, "  {0}: {1:C} ({2} seats)\n", play.Name, Convert.ToDecimal(thisAmount / 100), perf.Audience);
+                result += GetInvoiceLineForPerformance(cultureInfo, play, thisAmount, perf);
                 totalAmount += thisAmount;
             }
             result += String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount / 100));
             result += String.Format("You earned {0} credits\n", volumeCredits);
             return result;
+        }
+
+        private static string GetInvoiceLineForPerformance(CultureInfo cultureInfo, Play play, int thisAmount, Performance perf) {
+            return String.Format(cultureInfo, "  {0}: {1:C} ({2} seats)\n", play.Name, Convert.ToDecimal(thisAmount / 100), perf.Audience);
         }
 
         private static int CalculatePerformancePayout(Play play, Performance perf)
