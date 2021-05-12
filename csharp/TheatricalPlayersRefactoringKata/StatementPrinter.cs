@@ -16,25 +16,7 @@ namespace TheatricalPlayersRefactoringKata
             foreach(var perf in invoice.Performances) 
             {
                 var play = plays[perf.PlayID];
-                var thisAmount = 0;
-                switch (play.Type) 
-                {
-                    case "tragedy":
-                        thisAmount = 40000;
-                        if (perf.Audience > 30) {
-                            thisAmount += 1000 * (perf.Audience - 30);
-                        }
-                        break;
-                    case "comedy":
-                        thisAmount = 30000;
-                        if (perf.Audience > 20) {
-                            thisAmount += 10000 + 500 * (perf.Audience - 20);
-                        }
-                        thisAmount += 300 * perf.Audience;
-                        break;
-                    default:
-                        throw new Exception("unknown type: " + play.Type);
-                }
+                var thisAmount = CalculatePerformancePayout(play, perf);
                 volumeCredits = CountVolumeCredits(volumeCredits, perf, play);
 
                 // print line for this order
@@ -44,6 +26,35 @@ namespace TheatricalPlayersRefactoringKata
             result += String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount / 100));
             result += String.Format("You earned {0} credits\n", volumeCredits);
             return result;
+        }
+
+        private static int CalculatePerformancePayout(Play play, Performance perf)
+        {
+            var thisAmount = 0;
+            switch (play.Type)
+            {
+                case "tragedy":
+                    thisAmount = 40000;
+                    if (perf.Audience > 30)
+                    {
+                        thisAmount += 1000 * (perf.Audience - 30);
+                    }
+
+                    break;
+                case "comedy":
+                    thisAmount = 30000;
+                    if (perf.Audience > 20)
+                    {
+                        thisAmount += 10000 + 500 * (perf.Audience - 20);
+                    }
+
+                    thisAmount += 300 * perf.Audience;
+                    break;
+                default:
+                    throw new Exception("unknown type: " + play.Type);
+            }
+
+            return thisAmount;
         }
 
         private static int CountVolumeCredits(int volumeCredits, Performance perf, Play play)
