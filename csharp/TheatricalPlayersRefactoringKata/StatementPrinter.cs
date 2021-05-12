@@ -13,7 +13,7 @@ namespace TheatricalPlayersRefactoringKata
             var result = string.Format("Statement for {0}\n", invoice.Customer);
             CultureInfo cultureInfo = new CultureInfo("en-US");
 
-            foreach(var perf in invoice.Performances) 
+            foreach (var perf in invoice.Performances)
             {
                 var play = plays[perf.PlayID];
                 var thisAmount = CalculatePerformancePayout(play, perf);
@@ -23,8 +23,14 @@ namespace TheatricalPlayersRefactoringKata
                 result += GetInvoiceLineForPerformance(cultureInfo, play, thisAmount, perf);
                 totalAmount += thisAmount;
             }
-            result += String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount / 100));
+            result = GetInvoicePayoutLine(totalAmount, result, cultureInfo);
             result += String.Format("You earned {0} credits\n", volumeCredits);
+            return result;
+        }
+
+        private static string GetInvoicePayoutLine(int totalAmount, string result, CultureInfo cultureInfo)
+        {
+            result += String.Format(cultureInfo, "Amount owed is {0:C}\n", Convert.ToDecimal(totalAmount / 100));
             return result;
         }
 
