@@ -75,5 +75,19 @@ namespace TheatricalPlayersRefactoringKata
             if ("comedy" == play.Type) volumeCredits += (int) Math.Floor((decimal) perf.Audience / 5);
             return volumeCredits;
         }
+
+        private class PerformanceInvoiceLine
+        {
+            public PerformanceInvoiceLine(Play play, int seats, int cost)
+            {
+                Play = play;
+                Seats = seats;
+                Cost = cost;
+            }
+
+            public Play Play { get; }
+            public int Seats { get; }
+            public int Cost { get; }
+        }
     }
 }
